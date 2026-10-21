@@ -32,8 +32,6 @@ su_cmd 'cat /sys/devices/soc0/machine 2>/dev/null; cat /sys/devices/soc0/family 
 su_cmd 'zcat /proc/config.gz' > "$OUT/android.config" 2>"$OUT/config-error.txt" || {
   echo "warning: /proc/config.gz unavailable; see config-error.txt" >&2
 }
-adb shell 'su -c "tar -C /proc/device-tree -cf - ."' |
-  tar --warning=no-timestamp -C "$OUT" -xf -
 # Keep the flattened device-tree filesystem separate from the text diagnostics;
 # dtc -I fs must point at a directory containing only device-tree nodes/files.
 mkdir -p "$OUT/runtime-tree"
