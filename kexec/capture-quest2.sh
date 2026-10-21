@@ -34,7 +34,12 @@ su_cmd 'zcat /proc/config.gz' > "$OUT/android.config" 2>"$OUT/config-error.txt" 
 }
 adb shell 'su -c "tar -C /proc/device-tree -cf - ."' |
   tar --warning=no-timestamp -C "$OUT" -xf -
-dtc -q -I fs -O dtb "$OUT" -o "$OUT/runtime.dtb"
+# Keep the flattened device-tree filesystem separate from the text diagnostics;
+# dtc -I fs must point at a directory containing only device-tree nodes/files.
+mkdir -p "$OUT/runtime-tree"
+adb shell 'su -c "tar -C /proc/device-tree -cf - ."' |
+  tar --warning=no-timestamp -C "$OUT/runtime-tree" -xf -
+dtc -q -I fs -O dtb "$OUT/runtime-tree" -o "$OUT/runtime.dtb"
 adb shell 'su -c "cat /sys/firmware/fdt"' > "$OUT/boot-fdt.bin" 2>/dev/null || true
 
 (
