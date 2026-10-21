@@ -8,14 +8,15 @@ Roughly in the order we expect to work on them.
 
 Kexec lets a running Linux kernel load and start another kernel directly, without going through the bootloader. [Quest-KeXec](https://github.com/machachu56/quest-kexec-q2) does this for Meta headsets. It's a kernel module, based on [kexec-at-home](https://github.com/provide-salad/kexec-at-home), that loads into the running Quest OS kernel and boots a custom kernel and initramfs from there. So far it has only been developed and tested on the Quest Pro.
 
-The plan:
+The first integration scaffold is in [`kexec/`](../kexec/README.md). It adds a read-only runtime-state capture script and a preflight checker; neither attempts a handoff. The plan from here:
 
-1. Build the kexec modules for the exact Quest 2 kernel version of the firmware we support.
-2. Capture the Quest 2's runtime device tree and work out what the target kernel needs to take over the hardware without a full reset: display, GPU, USB and SyncBoss.
-3. Boot the SteamOS kernel and boot script through kexec instead of `fastboot flash boot`. The rest of the port stays the same.
-4. Add a "return to Quest OS" path, which is just a normal reboot.
+1. Capture runtime DTB, kernel config, release, command line and memory map with `bash kexec/capture-quest2.sh` on a rooted Quest 2.
+2. Build/port the loader module against the exact Android kernel running on the headset; verify its `vermagic` and symbol CRCs.
+3. Adapt payload preparation and the transition code to Quest 2-specific memory reservations and live hardware state (display/GPU, USB, SyncBoss/QMP and secure memory).
+4. Boot the SteamOS kernel and initramfs through kexec instead of `fastboot flash boot`, while retaining the existing image-based route.
+5. Validate logs and a recovery path on real hardware before enabling a one-command launch.
 
-**What it still needs:** root access on Quest OS, to load a kernel module. On a locked headset that means a root method for the firmware version on the headset. Kexec removes the need to unlock the bootloader, not the need for root.
+**Current status:** capture and preflight scaffolding only. There is not yet a Quest 2-validated loader or executable handoff in this repository. Root access on Quest OS is still required to load a kernel module; kexec removes the need to unlock the bootloader, not the need for root.
 
 ## 2. Sound
 
