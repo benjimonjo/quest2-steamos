@@ -60,7 +60,8 @@ Please read these before you flash anything.
 | [docs/PROTON.md](docs/PROTON.md)                   | Running Windows games, the Ruby fix, game logs                            |
 | [docs/SETTINGS.md](docs/SETTINGS.md)               | Switches that turn features on and off without rebuilding                 |
 | [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md) | Getting logs, common problems, recovery                                   |
-| [docs/ROADMAP.md](docs/ROADMAP.md)                 | What to work on next, including kexec for locked headsets               |
+| [docs/ROADMAP.md](docs/ROADMAP.md)                 | What to work on next, including kexec for locked headsets                |
+| [kexec/README.md](kexec/README.md)                  | Quest 2 kexec integration scaffold, capture and preflight                 |
 | [docs/HISTORY.md](docs/HISTORY.md)                 | How the port got here                                                     |
 
 ## What's in this repository
